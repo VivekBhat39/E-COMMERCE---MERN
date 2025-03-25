@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function AddProduct() {
+  let navigate = useNavigate();
   let { productId } = useParams();
 
   const [imageFile, setImageFile] = useState(null);
@@ -29,8 +30,8 @@ function AddProduct() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(data);
-    
+    // console.log(data);
+
     const formData = new FormData();
     if (imageFile) formData.append("image", imageFile);
     formData.append("name", data.name);
@@ -44,14 +45,16 @@ function AddProduct() {
 
 
     console.log("Submitting Data:", Object.fromEntries(formData.entries()));
-    console.log(formData);
-    
+    // console.log(formData);
+
 
     try {
       if (productId) {
         await axios.put(`${import.meta.env.VITE_BASEURL}/products/${productId}`, formData, {
           headers: { "Content-Type": "multipart/form-data" }
         });
+
+        navigate("/admin/products")
       } else {
         await axios.post(`${import.meta.env.VITE_BASEURL}/products`, formData, {
           headers: { "Content-Type": "multipart/form-data" }
