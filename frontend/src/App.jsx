@@ -15,9 +15,9 @@ import Products from './component/admin/Products';
 import Orders from './component/admin/Orders';
 import SignUp from './component/customer/SignUp';
 import SignIn from './component/customer/Signin';
-import RazorpaySettlements from './component/admin/RazorpaySettlements';
 import OrderConfirmation from './component/customer/OrderConfirmation ';
 import Customers from './component/admin/Customers';
+import CustomerOrders from './component/customer/CustomerOrders';
 
 function Layout() {
   const location = useLocation();
@@ -39,6 +39,7 @@ function Layout() {
           <Route path='/checkOut' element={<CheckOut />} />
           <Route path='/cart' element={<Cart />} />
           <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
+          <Route path="/customer-orders" element={<CustomerOrders />} />
           {/* <Route path='/adminLogin' element={<AdminLogin />} /> */}
 
           {/* Hide Header & Footer on these routes */}
@@ -54,7 +55,6 @@ function Layout() {
             <Route path='/admin/products' element={<Products />} />
             <Route path='/admin/orders' element={<Orders />} />
             <Route path='/admin/customers' element={<Customers />} />
-            <Route path='/admin/razorpaySettlements' element={<RazorpaySettlements />} />
           </Route>
         </Routes>
       </div>

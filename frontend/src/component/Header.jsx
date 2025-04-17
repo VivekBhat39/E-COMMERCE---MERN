@@ -76,6 +76,9 @@ export default function Header() {
                 <i className="fas fa-user mx-1"></i> Profile
               </a>
               <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <Link to={"/customer-orders"}>
+                  <button className="dropdown-item">My Orders</button>
+                </Link>
                 <li>
                   <button className="dropdown-item" onClick={handleLogout}>Log out</button>
                 </li>

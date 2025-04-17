@@ -34,10 +34,6 @@ function Sidebar() {
                                     ><i className="fas fa-lock fa-fw me-3"></i><span>Products</span></a
                                     >
                                 </Link>
-                                <Link to={"/admin/razorpaySettlements"}>
-                                    <a href="#" className="list-group-item list-group-item-action py-2 ripple"
-                                    ><i className="fas fa-lock fa-fw me-3"></i><span>Razorpay Settlements</span></a>
-                                </Link>
                                 <Link to={"/admin/orders"}>
                                     <a href="#" className="list-group-item list-group-item-action py-2 ripple"
                                     ><i className="fas fa-chart-line fa-fw me-3"></i><span>Orders</span></a

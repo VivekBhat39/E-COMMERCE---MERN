@@ -48,7 +48,7 @@ router.post("/", upload.single("image"), async (req, res) => {
         // console.log("File URL:", fileUrl);
         // console.log("Request Body:", req.body);
 
-        const { name, category, price, mrp, brand, color, size, description } = req.body;
+        const { name, category, price, mrp, brand, color, size, pquantity, description } = req.body;
 
         // Ensure all fields are present
         // if (!name || !categoryId || !price || !mrp || !brand || !color || !size || !description) {
@@ -77,6 +77,7 @@ router.post("/", upload.single("image"), async (req, res) => {
             brand,
             color,
             size,
+            pquantity,
             description
         });
 
@@ -104,7 +105,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        const productId = req.params.id;        
+        const productId = req.params.id;
 
         let singleProduct = await Product.findById(productId)
 
@@ -127,7 +128,7 @@ router.get("/:id", async (req, res) => {
 //         console.log("Product ID:", productId);
 //         console.log("Received Data:", body);
 //         console.log("Received File:", req.file);
-        
+
 
 //         let updatedProduct = await Product.findByIdAndUpdate(productId, body, { new: true });
 
@@ -139,29 +140,29 @@ router.get("/:id", async (req, res) => {
 
 router.put("/:id", upload.single("image"), async (req, res) => {
     try {
-      const productId = req.params.id;
-      const body = req.body;
-      console.log("Product ID:", productId);
-      console.log("Received Data:", body);
-      console.log("Received File:", req.file);
-  
-      // If a file was uploaded, update the image path
-      if (req.file) {
-        body.image = `/uploads/${req.file.filename}`;
-      }
-  
-      const updatedProduct = await Product.findByIdAndUpdate(productId, body, { new: true });
-  
-      if (!updatedProduct) {
-        return res.json({ status: "error", message: "Product not found" });
-      }
-  
-      res.json({ status: "success", data: updatedProduct });
+        const productId = req.params.id;
+        const body = req.body;
+        console.log("Product ID:", productId);
+        console.log("Received Data:", body);
+        console.log("Received File:", req.file);
+
+        // If a file was uploaded, update the image path
+        if (req.file) {
+            body.image = `/uploads/${req.file.filename}`;
+        }
+
+        const updatedProduct = await Product.findByIdAndUpdate(productId, body, { new: true });
+
+        if (!updatedProduct) {
+            return res.json({ status: "error", message: "Product not found" });
+        }
+
+        res.json({ status: "success", data: updatedProduct });
     } catch (err) {
-      console.error("Update Error:", err);
-      res.json({ status: "error", message: err.message });
+        console.error("Update Error:", err);
+        res.json({ status: "error", message: err.message });
     }
-  });
+});
 
 router.delete("/:id", async (req, res) => {
 
@@ -175,5 +176,26 @@ router.delete("/:id", async (req, res) => {
         res.json({ status: "error", data: err })
     }
 });
+
+// PUT /products/update-stock/:id
+router.put('/update-stock/:id', async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const quantityPurchased = req.body.quantityPurchased;
+
+        const product = await Product.findById(productId);
+        if (!product) return res.status(404).json({ message: 'Product not found' });
+
+        // Reduce quantity
+        product.pquantity = Math.max(product.pquantity - quantityPurchased, 0);
+        await product.save();
+
+        res.json({ message: 'Stock updated', product });
+    } catch (error) {
+        console.error('Error updating stock:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 
 module.exports = router;

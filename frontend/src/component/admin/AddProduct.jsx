@@ -16,6 +16,7 @@ function AddProduct() {
     brand: "",
     color: "",
     size: "",
+    pquantity: "",
     description: ""
   });
 
@@ -41,6 +42,7 @@ function AddProduct() {
     formData.append("brand", data.brand);
     formData.append("color", data.color);
     formData.append("size", data.size);
+    formData.append("pquantity", data.pquantity);
     formData.append("description", data.description);
 
 
@@ -70,6 +72,7 @@ function AddProduct() {
         brand: "",
         color: "",
         size: "",
+        pquantity: "",
         description: ""
       });
       setImageFile(null);
@@ -96,6 +99,7 @@ function AddProduct() {
             brand: product.brand,
             color: product.color,
             size: product.size,
+            pquantity: product.pquantity,
             description: product.description
           });
         })
@@ -112,11 +116,11 @@ function AddProduct() {
               <div className="card-body p-4 p-md-5">
                 <form onSubmit={handleSubmit}>
                   <div className="row">
-                    <div className="col-md-6 mb-4">
+                    <div className="col-md-4 mb-4">
                       <label className="form-label" htmlFor="name">Title</label>
                       <input value={data.name} onChange={handleChange} type="text" id="name" className="form-control form-control-lg" />
                     </div>
-                    <div className="col-md-6 mb-4">
+                    <div className="col-md-4 mb-4">
                       <label className="form-label" htmlFor="category">Category</label>
                       <select value={data.category} onChange={handleChange} className="form-control" id="category">
                         <option value="">Select Category</option>
@@ -125,16 +129,20 @@ function AddProduct() {
                         <option value="kids" id="">kids</option>
                       </select>
                     </div>
+                    <div className="col-md-4 mb-4">
+                      <label className="form-label" htmlFor="name">Product-Quantity</label>
+                      <input value={data.pquantity} onChange={handleChange} type="number" id="pquantity" className="form-control form-control-lg" />
+                    </div>
                   </div>
 
                   <div className="row">
                     <div className="col-md-4 mb-4">
                       <label className="form-label" htmlFor="price">Price</label>
-                      <input value={data.price} onChange={handleChange} type="text" className="form-control form-control-lg" id="price" />
+                      <input value={data.price} onChange={handleChange} type="number" className="form-control form-control-lg" id="price" />
                     </div>
                     <div className="col-md-4 mb-4">
                       <label className="form-label" htmlFor="mrp">MRP</label>
-                      <input value={data.mrp} onChange={handleChange} type="text" className="form-control form-control-lg" id="mrp" />
+                      <input value={data.mrp} onChange={handleChange} type="number" className="form-control form-control-lg" id="mrp" />
                     </div>
                     <div className="col-md-4 mb-4">
                       <label className="form-label" htmlFor="image">Image</label>
@@ -145,7 +153,14 @@ function AddProduct() {
                   <div className="row">
                     <div className="col-md-4 mb-4">
                       <label className="form-label" htmlFor="brand">Brand</label>
-                      <input value={data.brand} onChange={handleChange} type="text" className="form-control form-control-lg" id="brand" />
+                      <select value={data.brand} onChange={handleChange} className="form-control" id="brand">
+                        <option value="">Select Brand</option>
+                        <option value="Adidas" id="">Adidas</option>
+                        <option value="Bata" id="">Bata</option>
+                        <option value="Nike" id="">Nike</option>
+                        <option value="Puma" id="">Puma</option>
+                        <option value="Reebok" id="">Reebok</option>
+                      </select>
                     </div>
                     <div className="col-md-4 mb-4">
                       <label className="form-label" htmlFor="color">Color</label>

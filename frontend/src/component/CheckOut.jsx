@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 export default function CheckOut() {
   const [customerId, setCustomerId] = useState(undefined);
@@ -168,9 +169,23 @@ export default function CheckOut() {
         orderID: orderId  // Reference to the orders table
       }));
 
+      // Step 3: Update product stock quantities
+      for (const product of cartProduct) {
+        await axios.put(`${import.meta.env.VITE_BASEURL}/products/update-stock/${product._id}`, {
+          quantityPurchased: product.quantity
+        });
+      }
+
+
       await axios.post(`${import.meta.env.VITE_BASEURL}/orders/orderItems`, orderItems);
 
-      alert("Order placed successfully!");
+      // alert("Order placed successfully!");
+      Swal.fire({
+        title: "Order placed successfully",
+        text: "Please Visit again",
+        icon: "success"
+      });
+
       localStorage.removeItem("cart"); // Clear cart after successful order
       localStorage.removeItem("subTotal");
       navigate("/order-confirmation/" + orderId); // Redirect to confirmation page

@@ -84,7 +84,7 @@ function AllProduct() {
 								<div key={i} className="col-lg-4 mb-4 text-center">
 									<div className="product-entry border">
 										<a href="#" className="prod-img">
-											<img src={product.image} className="img-fluid" alt="Product" />
+											<img style={{width: "200px", height: "200px"}} src={product.image} className="img-fluid" alt="Product" />
 										</a>
 										<div className="desc">
 											<h2><a href="#">{product.name}</a></h2>
