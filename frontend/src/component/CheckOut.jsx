@@ -92,7 +92,7 @@ export default function CheckOut() {
     } else {
       axios.put(`${import.meta.env.VITE_BASEURL}/customers/${customerId}`, data)
         .then(() => {
-          alert('Billing Details Updated');
+          Swal.fire("Billing Details Updated");
         });
     }
   }

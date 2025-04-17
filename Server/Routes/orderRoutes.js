@@ -45,7 +45,7 @@ router.post("/orderItems", async (req, res) => {
 // GET Order API
 router.get("/", async (req, res) => {
   try {
-    const allOrder = await Order.find({});
+    const allOrder = await Order.find({}).sort({ date: -1 });
 
     res.json({ status: "success", data: allOrder });
 
@@ -86,6 +86,48 @@ router.get('/:orderId', async (req, res) => {
   } catch (error) {
     console.error("Error fetching order details:", error);
     res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// GET orders by customer ID
+router.get("/customer/:id", async (req, res) => {
+  try {
+    const customerId = req.params.id;
+    const orders = await Order.find({ customerId }).sort({ date: -1 });
+    res.json({ data: orders });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch orders" });
+  }
+});
+
+
+// POST - mark order as returned (within 10 days only)
+router.post("/return/:id", async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ error: "Order not found" });
+
+    const placedDate = new Date(order.date);
+    const today = new Date();
+    const diffDays = Math.floor((today - placedDate) / (1000 * 60 * 60 * 24));
+
+    if (diffDays > 10) {
+      return res.status(400).json({ error: "Return window expired" });
+    }
+
+    if (order.returned) {
+      return res.status(400).json({ error: "Order already returned" });
+    }
+
+    order.returned = true;
+    await order.save();
+
+    res.json({ message: "Order returned successfully" });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Return failed" });
   }
 });
 

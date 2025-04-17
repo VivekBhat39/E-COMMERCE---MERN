@@ -7,7 +7,9 @@ export default function CustomerOrders() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    axios.get(import.meta.env.VITE_BASEURL + "/orders")
+    const customerId = localStorage.getItem("_id");
+
+    axios.get(import.meta.env.VITE_BASEURL + `/orders/customer/${customerId}`)
       .then((res) => {
         console.log(res.data.data);
         setOrders(res.data.data);
@@ -18,6 +20,7 @@ export default function CustomerOrders() {
       });
   }, []);
 
+
   const handleReturn = (orderId) => {
     const confirmReturn = confirm("Are you sure you want to return this order?");
     if (!confirmReturn) return;
@@ -26,7 +29,7 @@ export default function CustomerOrders() {
       .then((res) => {
         alert("Return requested successfully!");
         // reload updated list
-        setOrders(orders.map(order => 
+        setOrders(orders.map(order =>
           order._id === orderId ? { ...order, returned: true } : order
         ));
       })
@@ -44,7 +47,7 @@ export default function CustomerOrders() {
 
   return (
     <div className="container mt-4">
-      <h2 className="text-primary mb-3">📋 My Orders</h2>
+      <h2 className="text-primary mb-3 text-start">📋 My Orders</h2>
 
       {error && <div className="alert alert-danger">{error}</div>}
 
@@ -73,9 +76,9 @@ export default function CustomerOrders() {
                     <td>₹{order.subTotal}</td>
                     <td>{order.paymentId}</td>
                     <td>
-                      {order.returned 
-                        ? <span className="text-success">Returned</span> 
-                        : eligible 
+                      {order.returned
+                        ? <span className="text-success">Returned</span>
+                        : eligible
                           ? <span className="text-warning">Eligible</span>
                           : <span className="text-danger">Expired</span>}
                     </td>
